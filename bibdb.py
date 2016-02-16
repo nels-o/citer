@@ -28,11 +28,11 @@ class Document(BaseModel):
     a reference to the review to which is belongs.
     """
     
+    md5 = CharField(max_length=16, unique=True, primary_key=True)
     review = ForeignKeyField(Review, related_name='documents')
 
     notes = TextField()
     bib = TextField()
-    file = TextField()
 
 class Citation(BaseModel):
 
