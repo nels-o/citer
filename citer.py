@@ -18,7 +18,7 @@ def wsgi_app():
 if __name__ == '__main__':
     PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static').replace('\\', '/')
-    HOST = '192.168.88.214'#os.environ.get('SERVER_HOST', 'localhost')
+    HOST = os.environ.get('SERVER_HOST', 'localhost')
     try:
         PORT = int(os.environ.get('SERVER_PORT', '61616'))
     except ValueError:
