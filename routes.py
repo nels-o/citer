@@ -3,7 +3,7 @@ from datetime import datetime
 
 from bibdb import *
 
-import json, os, bibtexparser
+import json, os, bibtexparser, hashlib
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static').replace('\\', '/')
@@ -29,8 +29,7 @@ def prototype():
     if cite and data and data.file:
         # Write file to disk. 
         filename = data.filename
-        response.status = 303
-        response.set_header('Location', '/add')
+        
         try:
             print("Parsing citation...")
             print(cite)
@@ -42,13 +41,17 @@ def prototype():
             print('-'*64)
             return {"msg": "bogus bib"}
         print(PROJECT_ROOT)
-        with open(DOCS_ROOT+'/'+filename,'wb') as open_file:
+
+        json_bib = json.dumps(bib.entries[0])
+        hashed_name = hashlib.md5(json_bib).hexdigest()
+        hashed_filename = hashed_name + '.pdf'
+
+        with open(DOCS_ROOT+'/'+hashed_filename,'wb') as open_file:
             open_file.write(data.file.read())
-        doc = Document(name=bib.entries[0]['title'], bib=json.dumps(bib.entries[0]), notes="", file=filename, review=__temp_review)
+        response.status = 303
+        response.set_header('Location', '/annotate/'+hashed_name)
+        doc = Document(md5=hashed_name, name=bib.entries[0]['title'], bib=json_bib, notes="", review=__temp_review)
         doc.save()
-        print('-'*64)
-        print(bib.entries)
-        print('-'*64)
         return {"msg": "Success"}
     return {"msg": "You missed a field."}
 
@@ -57,7 +60,7 @@ def prototype():
 def prototype():
     return {}
 
-@route('/annotate/<label>')
+@route('/annotate/<md5>')
 @view('annotate_document')
-def prototype(label=None):
-    return {"doc": label}
+def prototype(md5=None):
+    return {"doc": md5}
