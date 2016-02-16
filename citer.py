@@ -1,8 +1,16 @@
 import bottle
 import os
 import sys
-
+from beaker.middleware import SessionMiddleware
 import routes
+
+session_opts = {
+    'session.type': 'file',
+    'session.cookie_expires': 300,
+    'session.data_dir': './data',
+    'session.auto': True
+}
+app = SessionMiddleware(bottle.app(), session_opts)
 
 if '--debug' in sys.argv[1:] or 'SERVER_DEBUG' in os.environ:
     # Debug mode will enable more verbose output in the console window.
@@ -32,4 +40,4 @@ if __name__ == '__main__':
         return bottle.static_file(filepath, root=STATIC_ROOT)
 
     # Starts a local server.
-    bottle.run(server='paste', host=HOST, port=PORT)
+    bottle.run(server='paste', host=HOST, port=PORT, app=app)
