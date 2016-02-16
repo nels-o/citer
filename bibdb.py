@@ -16,7 +16,7 @@ class Review(BaseModel):
     reside in the same DB.  
     """
     
-    name = TextField()
+    name = TextField(primary_key=True)
     description = TextField()
 
 class Document(BaseModel):
@@ -28,7 +28,7 @@ class Document(BaseModel):
     a reference to the review to which is belongs.
     """
     
-    md5 = CharField(max_length=16, unique=True, primary_key=True)
+    md5 = FixedCharField(max_length=16, unique=True, primary_key=True)
     review = ForeignKeyField(Review, related_name='documents')
 
     notes = TextField()
@@ -51,7 +51,13 @@ class Tag(BaseModel):
     value = TextField()
 
 def init_tables():
+    global __default_review
+
     Review.create_table()
     Document.create_table()
     Citation.create_table()
     Tag.create_table()
+
+def init_defaults():
+    default_review = Review(name='Default', description='Default review')
+    default_review.save(force_insert=True)
