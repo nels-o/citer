@@ -9,7 +9,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static').replace('\\', '/')
 DOCS_ROOT = os.path.join(PROJECT_ROOT, 'docs').replace('\\', '/')
 
-__temp_review = Review.select().where(Review.name=='Test').get()
+__temp_review = Review.select().where(Review.name=='Visualization Design Frameworks').get()
 
 @route('/')
 @view('index')
@@ -27,29 +27,26 @@ def prototype():
     data = request.files.data
     
     if cite and data and data.file:
-        # Write file to disk. 
-        filename = data.filename
-        
+        # Parse bib
         try:
-            print("Parsing citation...")
-            print(cite)
             bib = bibtexparser.loads(cite)
-            print(bib.entries[0])
         except:
-            print('-'*64)
-            print("Oopsie.")
-            print('-'*64)
             return {"msg": "bogus bib"}
-        print(PROJECT_ROOT)
 
+        # encode the bib
         json_bib = json.dumps(bib.entries[0])
         hashed_name = hashlib.md5(json_bib).hexdigest()
         hashed_filename = hashed_name + '.pdf'
 
+        # write the pdf to file.
         with open(DOCS_ROOT+'/'+hashed_filename,'wb') as open_file:
             open_file.write(data.file.read())
+
+        # Redirect the user to the add page
         response.status = 303
-        response.set_header('Location', '/annotate/'+hashed_name)
+        response.set_header('Location', '/add)
+
+        # Write the db entry for the document.
         doc = Document(md5=hashed_name, name=bib.entries[0]['title'], bib=json_bib, notes="", review=__temp_review)
         doc.save()
         return {"msg": "Success"}
