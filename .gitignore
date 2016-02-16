@@ -71,3 +71,4 @@ target/
 # App specific
 *.db
 *.pdf
+data/
