@@ -67,3 +67,7 @@ target/
 
 # pyenv
 .python-version
+
+# App specific
+*.db
+*.pdf
