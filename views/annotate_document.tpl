@@ -1,2 +1,2 @@
-% rebase('layout.tpl')
-% import bibdb  
+% rebase('layout.tpl', page='annotate')
+
