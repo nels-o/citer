@@ -31,7 +31,7 @@ def prototype():
 
 @route('/curr_review/<name>')
 @view('add_review')
-def prototype(name="Defualt"):
+def prototype(name="Default"):
     r = Review.select().where(Review.name==name).count()
     if r > 0:
         session()['curr_review'] = name
