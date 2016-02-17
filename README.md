@@ -13,9 +13,9 @@ citer is currently at a low level of polish
 
 The citer data model is based around collections (the Review model) of Documents, and Citation relationships between documents.
   ```                 
-                       ___________
-                      /           \
-                      V           |
+                     _____________
+                    /             \
+                    V             |
    Review -> Document -> Citation-|
                       |
                       V
