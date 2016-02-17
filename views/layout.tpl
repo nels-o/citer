@@ -47,8 +47,8 @@
 % active[page] = 'active'
                     <li class="{{active['index']}}"><a href="/">Overview</a></li>
                     <li class="{{active['add_review']}}"><a href="/add_review">Add Review</a></li>
-                    <li class="{{active['add']}}"><a href="/add">Add</a></li>
-                    <li class="{{active['annotate']}}"><a href="/annotate">Annotate</a></li>
+                    <li class="{{active['annotate']}}"><a href="/annotate">List Papers</a></li>
+                    <li class="{{active['add']}}"><a href="/add">Add Papers</a></li>
                 </ul>
                 <!-- <ul class="nav nav-sidebar">
                     <li><a href="">Nav item</a></li>
