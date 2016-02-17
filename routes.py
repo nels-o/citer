@@ -93,10 +93,26 @@ def prototype():
 def prototype():
     return {}
 
+
+@route('/handle_annotations', method="POST")
+def prototype():
+    md5  = request.forms.md5
+    notes = request.forms.notes
+
+    if md5 and notes:
+        doc = Document.select().where(Document.md5 == md5).get()
+        doc.notes = notes
+        doc.save()
+        session()['msg'] = "Saved."
+        return redirect('/annotate/'+md5)
+
+    session()['msg'] = "You missed a field, or something went wrong."
+    return redirect('/annotate/'+md5)
+
 @route('/annotate/<md5>')
 @view('annotate_document')
 def prototype(md5=None):
-    return {"doc": md5}
+    return {"doc": md5, "msg": session().get('msg','')}
 
 @route('/paper/<md5>')
 @view('annotate_document')
