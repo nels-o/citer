@@ -62,13 +62,18 @@ def prototype():
 
         # encode the bib
         json_bib = json.dumps(bib.entries[0])
+        contents = data.file.read() # hazard.
+
         # hash the bib with the review; save separate copies per review.
-        hashed_name = hashlib.md5(json_bib+cr.name).hexdigest()
+        hashed_name = hashlib.md5()
+        hashed_name.update(contents)
+        hashed_name.update(cr.name.encode('utf-8'))
+        hashed_name = hashed_name.hexdigest()
         hashed_filename = hashed_name + '.pdf'
 
         # write the pdf to file.
         with open(DOCS_ROOT+'/'+hashed_filename,'wb') as open_file:
-            open_file.write(data.file.read())
+            open_file.write(contents)
 
         # Redirect the user to the add page
         response.status = 303
