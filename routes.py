@@ -64,7 +64,7 @@ def prototype():
         json_bib = json.dumps(bib.entries[0])
         contents = data.file.read() # hazard.
 
-        # hash the bib with the review; save separate copies per review.
+        # hash the bib with the review; save separate copies of each file per review.
         hashed_name = hashlib.md5()
         hashed_name.update(contents)
         hashed_name.update(cr.name.encode('utf-8'))
