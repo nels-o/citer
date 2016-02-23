@@ -40,4 +40,6 @@ if __name__ == '__main__':
         return bottle.static_file(filepath, root=STATIC_ROOT)
 
     # Starts a local server.
-    bottle.run(server='paste', host=HOST, port=PORT, app=app)
+    #bottle.run(server='paste', host=HOST, port=PORT, app=app)
+    #bottle.run(server='waitress',host=HOST, port=PORT, app=app)
+    bottle.run(server='waitress',host=HOST, port=PORT, app=app)
