@@ -1,7 +1,7 @@
 % rebase('layout.tpl', page='annotate')
 % from bibdb import *
 % from util import *
-% import bibtexparser
+% import bibtexparser, json
 
 % cr = current_review()
 
@@ -20,7 +20,7 @@
 				<a href="/citations/{{d.md5}}" title="">Add Citations</a> 
 				<a href="javascript:;" class="show-bib" title="">BibTeX</a>
 	    	</h4>
-	    	<p>{{doc['author']}}, {{doc['year']}}</p>
+	    	<p>{{doc['author']}}, {{doc['year']}} <a href="http://www.doi2bib.org/#/doi/{{doc.get('doi','')}}">{{doc.get('doi','')}}</a></p>
 	    	<div class='bib' hidden>
 	    		<pre>{{!d.bib}}</pre>
 	    	</div>
