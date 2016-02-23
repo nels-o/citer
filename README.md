@@ -21,3 +21,7 @@ The citer data model is based around collections (the Review model) of Documents
                       V
                       Tags
   ```                 
+## Goofing off
+
+Frequency diagrams are fun, and this seems to work reasonably well.
+![Rough cut keyword frequency view](https://cloud.githubusercontent.com/assets/2745310/13128829/9cf74b4e-d58d-11e5-84ef-76d7c6b40b4e.png)
