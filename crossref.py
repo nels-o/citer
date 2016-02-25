@@ -9,7 +9,7 @@ works = 'works'
 # types = 'types'
 # licenses = 'licenses'
 
-__doi_url = 'http://doi.org/'
+doi_url = 'http://doi.org/'
 
 def query_xref(q):
 	r = http.request('GET', xref_api_url+q)
