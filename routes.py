@@ -93,6 +93,18 @@ def prototype():
 def prototype():
     return {}
 
+@route('/lookup/<md5>')
+def prototype(md5):
+    import crossref as cr
+    from bibtexparser import loads as b_in, dumps as b_out
+
+    d = Document.select().where(Document.md5 == md5).get()
+    if d:
+        bib = cr.title2bib(b_in(d.bib).entries[0].get('title',''))
+        response['Content-Type'] = 'appliction/x-bibtex'
+        return bib
+    response.status = 404;
+    return None
 
 @route('/handle_annotations', method="POST")
 def prototype():
