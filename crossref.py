@@ -23,7 +23,7 @@ def query_xref(q):
 def query_doi2bib(doi):
 	r = http.request('GET', doi_url+doi,headers={'Accept':'application/x-bibtex'})
 	if r.status == 200:
-		return r.data
+		return r.data.decode('utf-8')
 	return None
 
 def doi_lookup(title, result_limit=5):
