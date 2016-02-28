@@ -100,7 +100,11 @@ def prototype(md5):
 
     d = Document.select().where(Document.md5 == md5).get()
     if d:
-        bib = cr.title2bib(b_in(d.bib).entries[0].get('title',''))
+        ob = b_in(d.bib).entries[0]
+        search = ob.get('title','') 
+        # At some point, consider adding more information...
+        # Also, should detect existing DOI's
+        bibs = cr.title2bib(search)
         response['Content-Type'] = 'appliction/x-bibtex'
         return bib
     response.status = 404;
