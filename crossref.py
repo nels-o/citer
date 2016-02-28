@@ -9,7 +9,7 @@ works = 'works'
 # types = 'types'
 # licenses = 'licenses'
 
-__doi_url = 'http://doi.org/'
+doi_url = 'http://doi.org/'
 
 def query_xref(q):
 	r = http.request('GET', xref_api_url+q)
@@ -26,12 +26,12 @@ def query_doi2bib(doi):
 		return r.data
 	return None
 
-def title_lookup(title, result_limit=5):
+def doi_lookup(title, result_limit=5):
 	exploded = title.replace(' ', '+')
 	return query_xref(works+"?query="+exploded+'&rows='+str(result_limit))
 
 def title2bib(title):
-	result = title_lookup(title)
+	result = doi_lookup(title)
 	if result:
 		try:
 			return query_doi2bib(result['message']['items'][0]['DOI'])
