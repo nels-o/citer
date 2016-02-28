@@ -34,7 +34,7 @@ def title2bib(title):
 	result = doi_lookup(title)
 	if result:
 		try:
-			return query_doi2bib(result['message']['items'][0]['DOI'])
+			return ( (query_doi2bib(i['DOI']), i['score']) for i in result['message']['items'])
 		except:
 			return None
 	return None
