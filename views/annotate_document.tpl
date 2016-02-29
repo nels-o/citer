@@ -10,7 +10,7 @@
         {{bib.get('title','(no title)')}} 
     </h4>
     <p>{{bib.get('author', '(no author(s) provided)')}}, {{bib.get('year', '(no year provided)')}}</p>
-    <p>{{bib['keyword']}}</p>
+    <p>{{bib.get('keyword','')}}</p>
     <p>
         <a href="/paper/{{cd.md5}}" title="">Paper</a>
         <a href="/citations/{{cd.md5}}" title="">Add Citations</a>
