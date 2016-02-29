@@ -21,6 +21,18 @@
 		<pre contenteditable="true">{{!cd.bib}}</pre>
 	</div>
 
+	<div class='tag-set'>
+% for tag in cd.tags:
+		<div class='tag'>
+			<div class='tag-text'>{{tag}}</div>
+		</div>
+% end
+		<div class='tag add-tag'>
+			<div class='tag-text' contenteditable="true">+</div>
+			<div class='tag-del'>x</div>
+		</div>
+	</div>	
+
 	<form style="width:100%;" action="/handle_annotations" method="post" enctype="multipart/form-data">
 	    <div class="form-group">
 	        <label for="notes">Notes</label>

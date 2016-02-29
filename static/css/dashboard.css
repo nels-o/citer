@@ -103,3 +103,31 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+.tag-set{
+  font-size: 1.5em;
+  display: inline-block;
+}
+
+.tag{
+  color: white;
+  background: #428bca;
+  padding: 5px 5px;
+  border-radius: 2px;
+  height: 1.75em;
+  text-align:center;
+  vertical-align: middle;
+}
+
+.tag-del{
+  position: relative;
+  background: #428bca;
+  font-size: 12px;
+  border-radius: 5px 5px;
+  top: -3.5em;
+  left: -1em;
+  text-align:left;
+  width: 12px;
+  padding-left:3px;
+  cursor:pointer;
+}
