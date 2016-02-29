@@ -112,14 +112,27 @@ def prototype(md5):
 
 @route('/handle_annotations', method="POST")
 def prototype():
-    md5  = request.forms.md5
+    md5   = request.forms.md5
+    bib   = request.forms.bib
     notes = request.forms.notes
-
-    if md5 and notes:
+    
+    if md5:
         doc = Document.select().where(Document.md5 == md5).get()
-        doc.notes = notes
-        doc.save()
-        session()['msg'] = "Saved."
+        if doc:
+            if notes:
+                doc.notes = notes
+            if bib:
+                try:
+                    bibtexparser.loads(bib)
+                    doc.bib = bib.strip()
+                except:
+                    session()['msg'] = "Invalid bibtex."
+                    return redirect('/annotate/'+md5)
+            doc.save()
+            session()['msg'] = " Success"
+            return redirect('/annotate/'+md5)
+    else:
+        session()['msg'] = "Invalid request. No document specified."
         return redirect('/annotate/'+md5)
 
     session()['msg'] = "You missed a field, or something went wrong."
