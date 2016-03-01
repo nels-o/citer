@@ -61,6 +61,7 @@ $(function() {
     		valueKey: 'value',
     		source: tags.ttAdapter()
         },
+        tagClass: 'big',
         freeInput: true
     });
     $("#msg").fadeOut({duration: 4000, easing: 'easeInCirc'});
