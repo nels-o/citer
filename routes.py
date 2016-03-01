@@ -117,8 +117,6 @@ def prototype():
     bib     = request.forms.bib
     notes   = request.forms.notes
     tags    = request.forms.tags.split(',')
-    deltags = request.forms.deltags.split(',')
-    print(tags)
     if md5:
         doc = Document.select().where(Document.md5 == md5).get()
         if doc:
@@ -132,14 +130,10 @@ def prototype():
                     session()['msg'] = "Invalid bibtex."
                     return redirect('/annotate/'+md5)
             if tags:
+                Tag.delete().where(Tag.document == doc).execute()
                 for tag in tags:
                     try:
                         Tag.insert(document=doc, value=tag).execute()
-                    except Exception:
-                        pass
-                for tag in deltags:
-                    try:
-                        Tag.delete(document=doc, value=tag).execute()
                     except Exception:
                         pass
             doc.save()
