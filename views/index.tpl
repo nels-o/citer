@@ -18,16 +18,20 @@
 	}
 </style>
 % for r in Review.select():
+    % try:
 	<div>
 		<h3>{{r.name}} <a href="/curr_review/{{r.name}}" title="">&raquo;</a></h3>
 		<dir>{{r.description}} <span>({{r.documents.count()}})<span></dir>
-%	ks = Counter([ k.strip() for d in r.documents for k in bibtexparser.loads(d.bib).entries[0].get('keyword','').split(',')])
+        % ks = Counter([ k.strip() for d in r.documents for k in bibtexparser.loads(d.bib).entries[0].get('keyword','').split(',')])
 	<div class="keywords">
-	% for k,v in ks.most_common(15):
-		% if not k is '':
+        % for k,v in ks.most_common(15):
+            % if not k is '':
 			<div class="keyword" style="font-size: {{v*50}}%;"><span>{{k}}</span></div>
-		% end
-	% end
+            % end
+        % end
+    % except:
+    
+    % end
 	</div>
 	</div>
 % end
