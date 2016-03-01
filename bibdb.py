@@ -48,8 +48,8 @@ class Citation(BaseModel):
     The foreign key related name mechanism allows the Document model
     to refer directly to its set of citations  
     """
-    parent_ = ForeignKeyField(Document, related_name='parent')
-    document_ = ForeignKeyField(Document, related_name='citations')
+    parent_ = ForeignKeyField(Document, related_name='references')
+    document_ = ForeignKeyField(Document, related_name='cited_by')
 
 class Tag(BaseModel):
     """
