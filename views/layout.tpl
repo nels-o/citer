@@ -8,10 +8,13 @@
     <title>Citer</title>
 
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-tagsinput.css">
     <link rel="stylesheet" type="text/css" href="/static/css/dashboard.css">
     <script src="/static/js/jquery-2.2.0.min.js" type="text/javascript" charset="utf-8" ></script>
     <script src="/static/js/jquery.easing.1.3.js" type="text/javascript" charset="utf-8" ></script>
     <script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8" ></script>
+    <script src="/static/js/bootstrap-tagsinput.min.js" type="text/javascript" charset="utf-8" ></script>
+    <script src="/static/js/typeahead.js" type="text/javascript" charset="utf-8" ></script>
 </head>
 
 <body>
