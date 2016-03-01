@@ -43,8 +43,12 @@ def prototype(name="Default"):
 @route('/add')
 @view('add')
 def prototype():
-
     return {"msg": session().get('msg','')}
+
+@route('/citations/<md5>')
+@view('add_citations')
+def prototype(md5):
+    return {"msg": session().get('msg',''),'doc': md5}
 
 @route('/handle_document', method="POST")
 def prototype():
