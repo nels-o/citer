@@ -5,14 +5,7 @@
 % cd = Document.select().where(Document.md5 == doc).get() 
 % bib = bibtexparser.loads(cd.bib).entries[0]
 <div>
-    <h4>
-        Citations From: <i>{{bib.get('title','(no title)')}}</i> 
-    </h4>
-    <p>{{bib.get('author', '(no author(s) provided)')}}, {{bib.get('year', '(no year provided)')}}</p>
-    <p>{{bib.get('keyword','')}}</p>
-    <p>
-        <a href="/paper/{{cd.md5}}" title="">Paper</a>
-    </p>
+    % include('paper.tpl', doc=cd, bib=bib)
   
   	<form style="width:40%;" action="/handle_citation" method="post" enctype="multipart/form-data">
 	    <div class="form-group">

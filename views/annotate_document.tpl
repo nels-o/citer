@@ -6,16 +6,7 @@
 % bib = bibtexparser.loads(cd.bib).entries[0]
 
 <div>
-    <h4>
-        {{bib.get('title','(no title)')}} 
-    </h4>
-    <p>{{bib.get('author', '(no author(s) provided)')}}, {{bib.get('year', '(no year provided)')}}</p>
-    <p>{{bib.get('keyword','')}}</p>
-    <p>
-        <a href="/paper/{{cd.md5}}" title="">Paper</a>
-        <a href="/citations/{{cd.md5}}" title="">Add Citations</a>
-        <a href="javascript:;" class="show-bib" title="">BibTeX</a>
-    </p>
+    % include('paper.tpl', doc=cd, bib=bib)
   
   	<div class='bib-display' hidden>
 		<pre contenteditable="true">{{!cd.bib}}</pre>
@@ -35,6 +26,15 @@
 	    <button type="submit" class="btn btn-default">Save</button>
 	    <p id="msg" class="help-block">{{msg}}</p>
 	</form>
+
+    <div class='citation-list'>
+    <h3>References:</h3>
+    <hr>
+% for d in cd.references:
+        % doc = d.document_
+        % include('paper.tpl', doc=doc, bib=bibtexparser.loads(doc.bib).entries[0])
+% end
+    </div>
 </div>
 
 <script>
@@ -47,9 +47,6 @@ $(function() {
 	});
 	tags.initialize();
 
-    $('.show-bib').click(function() {
-        $(this).parent().parent().find('.bib-display').slideToggle();
-    });
     $(".bib-display").focusout(function(){
     	$(".bib-input").text($(this).text());
     });

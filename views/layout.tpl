@@ -70,6 +70,13 @@
             {{!base}}
             </div>
         </div>
+        <script>
+        $(function(){
+            $('.show-bib').click(function() {
+                $(this).parent().parent().find('.bib-display').slideToggle();
+            });
+        });
+        </script>
 </body>
 
 </html>
