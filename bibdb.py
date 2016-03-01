@@ -64,6 +64,9 @@ class Tag(BaseModel):
     document = ForeignKeyField(Document, related_name='tags')
     value = TextField()
 
+    class Meta:
+        primary_key = CompositeKey('document', 'value')
+
 def init_tables():
     """
     For use in a clean database, this initializes all the models. 
