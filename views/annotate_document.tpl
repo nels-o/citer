@@ -21,11 +21,10 @@
 		<pre contenteditable="true">{{!cd.bib}}</pre>
 	</div>
 
-
     <form style="width:100%;" action="/handle_annotations" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="tags">Tags</label>
-            <input style="min-height:400px;" data-role="tagsinput" name="tags" class="form-control tags"></input>
+            <input style="min-height:400px;" data-role="tagsinput" name="tags" class="form-control tags" value="{{!','.join([t.value for t in cd.tags])}}"></input>
         </div>
         <div class="form-group">
             <label for="notes">Notes</label>
@@ -33,7 +32,6 @@
 	    </div>
 	    <input name="md5" type="text" value="{{cd.md5}}" hidden></input>
 	    <textarea class='bib-input' name="bib" hidden></textarea>
-        <input class='deltags' name="deltags" type="text" hidden></input>
 	    <button type="submit" class="btn btn-default">Save</button>
 	    <p id="msg" class="help-block">{{msg}}</p>
 	</form>
@@ -41,6 +39,13 @@
 
 <script>
 $(function() {
+
+	tags = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		local: {{!json.dumps([t.value for t in Tag.select(fn.Distinct(Tag.value))])}}
+	});
+	tags.initialize();
 
     $('.show-bib').click(function() {
         $(this).parent().parent().find('.bib-display').slideToggle();
@@ -50,20 +55,14 @@ $(function() {
     });
 
     $(".tags").tagsinput({
-        typeahead: {
-            source: ['Amsterdam', 'Washington', 'Sydney', 'Beijing', 'Cairo']
+        typeaheadjs: {
+        	name: 'tags',
+            displayKey: 'value',
+    		valueKey: 'value',
+    		source: tags.ttAdapter()
         },
         freeInput: true
     });
-% for tag in cd.tags:
-    $(".tags").tagsinput('add', {{!"'"+tag.value+"'"}});
-% end
     $("#msg").fadeOut({duration: 4000, easing: 'easeInCirc'});
-
-    $('.tags').on('itemRemoved', function(event) {
-        var d = $(".deltags");
-        if(d.val() == '') d.val(event.item);
-        else d.val(d.val() +','+ event.item);
-    });
 });
 </script>
