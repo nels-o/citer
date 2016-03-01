@@ -43,6 +43,7 @@ def prototype(name="Default"):
 @route('/add')
 @view('add')
 def prototype():
+
     return {"msg": session().get('msg','')}
 
 @route('/handle_document', method="POST")
@@ -97,7 +98,7 @@ def prototype():
 def prototype(md5):
     import crossref as cr
     from bibtexparser import loads as b_in, dumps as b_out
-
+    session()['msg'] = ""
     d = Document.select().where(Document.md5 == md5).get()
     if d:
         ob = b_in(d.bib).entries[0]
@@ -105,17 +106,19 @@ def prototype(md5):
         # At some point, consider adding more information...
         # Also, should detect existing DOI's
         bibs = cr.title2bib(search)
-        response['Content-Type'] = 'appliction/x-bibtex'
-        return bib
+        response['Content-Type'] = 'appliction/json'
+        return json.dumps([{'bib': bib, 'score': score} for bib, score in bibs])
     response.status = 404;
     return None
 
 @route('/handle_annotations', method="POST")
 def prototype():
-    md5   = request.forms.md5
-    bib   = request.forms.bib
-    notes = request.forms.notes
-    
+    md5     = request.forms.md5
+    bib     = request.forms.bib
+    notes   = request.forms.notes
+    tags    = request.forms.tags.split(',')
+    deltags = request.forms.deltags.split(',')
+    print(tags)
     if md5:
         doc = Document.select().where(Document.md5 == md5).get()
         if doc:
@@ -128,6 +131,17 @@ def prototype():
                 except:
                     session()['msg'] = "Invalid bibtex."
                     return redirect('/annotate/'+md5)
+            if tags:
+                for tag in tags:
+                    try:
+                        Tag.insert(document=doc, value=tag).execute()
+                    except Exception:
+                        pass
+                for tag in deltags:
+                    try:
+                        Tag.delete(document=doc, value=tag).execute()
+                    except Exception:
+                        pass
             doc.save()
             session()['msg'] = " Success"
             return redirect('/annotate/'+md5)
