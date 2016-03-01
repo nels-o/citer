@@ -35,7 +35,7 @@ def prototype(name="Default"):
     r = Review.select().where(Review.name==name).count()
     if r > 0:
         session()['curr_review'] = name
-        return redirect('/add')
+        return redirect('/annotate')
     session()['msg'] = 'Invalid review'
     return redirect('/')
 
@@ -49,6 +49,61 @@ def prototype():
 @view('add_citations')
 def prototype(md5):
     return {"msg": session().get('msg',''),'doc': md5}
+
+@route('/handle_citation', method="POST")
+def prototype():
+    cite = request.forms.cite
+    par  = request.forms.md5
+    data = request.files.data
+    cr = current_review()
+
+    if cite and par and data and data.file:
+        # Parse bib
+        try:
+            bib = bibtexparser.loads(cite)
+        except:
+            session()['msg'] = "bogus bib"
+            return redirect('/add')
+
+
+        # encode the bib
+        json_bib = json.dumps(bib.entries[0])
+        contents = data.file.read() # hazard.
+
+        # hash the bib with the review; save separate copies of each file per review.
+        hashed_name = hashlib.md5()
+        hashed_name.update(contents)
+        hashed_name.update(cr.name.encode('utf-8'))
+        hashed_name = hashed_name.hexdigest()
+        hashed_filename = hashed_name + '.pdf'
+
+        # write the pdf to file.
+        with open(DOCS_ROOT+'/'+hashed_filename,'wb') as open_file:
+            open_file.write(contents)
+
+        parent = Document.select().where(Document.md5 == par).get()
+
+        # Write the db entry for the document.
+        doc = None
+        try:
+            doc = Document(md5=hashed_name, name=bib.entries[0]['title'], bib=cite.strip(' \t\n\r'), notes="", review=cr)
+            doc.save(force_insert=True)        
+        except:
+            doc = Document.select().where(Document.md5 == hashed_name).get()
+
+        if doc:
+            # write the citation entry
+            cite = Citation.insert(parent_=parent, document_=doc).execute()
+            
+            # Redirect the user to the add page
+            response.status = 303
+            response.set_header('Location', '/citations/'+par)
+
+            session()['msg'] = "Success"
+            return redirect('/add')
+
+    session()['msg'] = "You missed a field."
+    return redirect('/add')
 
 @route('/handle_document', method="POST")
 def prototype():
