@@ -189,12 +189,13 @@ def prototype():
                     session()['msg'] = "Invalid bibtex."
                     return redirect('/annotate/'+md5)
             if tags:
-                Tag.delete().where(Tag.document == doc).execute()
-                for tag in tags:
-                    try:
-                        Tag.insert(document=doc, value=tag).execute()
-                    except Exception:
-                        pass
+                with db.atomic():
+                    Tag.delete().where(Tag.document == doc).execute()
+                    for tag in tags:
+                        try:
+                            Tag.insert(document=doc, value=tag).execute()
+                        except Exception:
+                            pass
             doc.save()
             session()['msg'] = " Success"
             return redirect('/annotate/'+md5)
